@@ -1,18 +1,18 @@
 .container {
-	height: 600px;
-	max-width: 1000px;
-	text-align: center;
+  height: 600px;
+  max-width: 1000px;
+  text-align: center;
 }
 
 #titulo {
-	border: 1px solid red;
-	border-radius: 20px;
+  border: 1px solid red;
+  border-radius: 20px;
 }
 
 .item {
-	margin: 1em;
+  margin: 1em;
 }
 
 .nome {
-	width: 8em;
+  width: 8em;
 }
