@@ -1,14 +1,37 @@
 from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
 app = Flask(__name__)
+
+### configurando o banco de dados
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bancoDeDados.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+###
+
+#### Criar o modelo para o registro do usuario
+class Apontamento(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nome_usuario = db.Column(db.String(25), nullable=True)
+    hora = db.Column(db.DateTime, default=datetime.now)
+
+db.ceate_all()
 
 @app.route('/inicio')
 @app.route('/')
-def inicio():
+def mostra_inicio():
     return render_template('index.html')
 
-@app.route('/inicio-alternativo')
-def outro_inicio():
-    return render_template('alternative.html')
+@app.route('/api/funcionarios', methods=['GET', 'POST'])
+
+@app.route('/contato')
+def contato():
+    return render_template('contato.html')
+
+@app.route('/sobre')
+def sobre():
+    return render_template('sobre.html')
 
 
 ## Para rodar o projeto em desenvolvimento localmente
