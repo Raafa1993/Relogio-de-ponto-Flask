@@ -4,19 +4,22 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-### configurando o banco de dados
+##### Configurar o banco de dados
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bancoDeDados.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-###
+#####
 
-#### Criar o modelo para o registro do usuario
+##### Criar o modelo para o registro do usuario
+# class Usuario(db.Model):
+#     codigo = 
+
 class Apontamento(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome_usuario = db.Column(db.String(25), nullable=True)
     hora = db.Column(db.DateTime, default=datetime.now)
 
-db.ceate_all()
+db.create_all()
 
 @app.route('/inicio')
 @app.route('/')
