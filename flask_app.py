@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -19,6 +19,18 @@ class Apontamento(db.Model):
     nome_usuario = db.Column(db.String(25), nullable=True)
     hora = db.Column(db.DateTime, default=datetime.now)
 
+#class Usuario (db.Model):
+#    login =
+#    email =
+
+    @property
+    def serializar(self): # para converter obj python em json
+        return {
+            'id': self.id, 
+            'nome_usuario': self.nome_usuario,
+            'hora': str(self.hora)[11:19]
+        }
+
 db.create_all()
 
 @app.route('/inicio')
@@ -26,7 +38,21 @@ db.create_all()
 def mostra_inicio():
     return render_template('index.html')
 
-@app.route('/api/funcionarios', methods=['GET', 'POST'])
+@app.route('/funcionarios', methods=['GET', 'POST'])
+def funcionarios():
+    if request.method == 'POST':
+        print(request.form['nome']) # pessoa digitou
+
+        usuario = Apontamento(nome_usuario=request.form['nome'])
+        db.session.add(usuario)
+        db.session.commit()
+        return render_template('index.html')
+
+    if request.method == 'GET':
+        ultimos10 = Apontamento.query.order_by(-Apontamento.id).limit(10).all()
+        print(ultimos10)
+        return jsonify(funcionarios=[i.serializar for i in ultimos10]) # obj python convertido em json
+
 
 @app.route('/contato')
 def contato():
